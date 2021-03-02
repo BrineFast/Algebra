@@ -8,11 +8,21 @@ alphabet += list(string.whitespace)
 codes = list(map(lambda letter: '0' * (6 - len(format(alphabet.index(letter), 'b')))
                                 + format(alphabet.index(letter), 'b'), alphabet))
 
-with open('utils/fifth_task.txt', encoding='utf-8') as f:
+with open('utils/sixth_task.txt', encoding='utf-8') as f:
     text = list(f.read().lower())
     f.close()
-key = input("Ключ: ")
-key = int(key, 2)
+
+def generate_key(states):
+    output = ''
+    count = 0
+    length = pow(2, len(states)) - 1
+    while count < length:
+        next_el = int(states[0]) ^ int(states[-1])
+        output += str(states[-1])
+        states.insert(0, next_el)
+        del states[-1]
+        count += 1
+    return output
 
 def encrypt():
     text_code = list(map(lambda x: codes[alphabet.index(x)], text))
@@ -26,7 +36,10 @@ def decryption(xor):
                        + format(int(letter, 2) ^ key, 'b'), xor))
     return list(map(lambda letter: alphabet[int(letter, 2)], text_code))
 
+global key
+key = int(generate_key(input("Ввеидет состояния: ").split()))
 
+print(f"Ключ: {key}")
 encoded, xor = encrypt()
 print(f"Шифр: {''.join(encoded)}")
 decoded = decryption(xor)
