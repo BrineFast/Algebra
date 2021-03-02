@@ -2,26 +2,58 @@ import string
 
 first_letter = ord('а')
 alphabet = [chr(i) for i in range(first_letter, first_letter + 32)]
-alphabet += list(string.punctuation)
-alphabet += list(string.digits)
-alphabet += [' ']
-codes = list(map(lambda x: '0' * (6 - len(list(map(bin, bytearray(alphabet.index(x))))))
-                           + ''.join(map(bin, bytearray(alphabet.index(x)))), alphabet))
+table = [[[0 for k in range(32)] for j in range(32)] for i in range(32)]
+for i in range(0, 32):
+    for j in range(0, 32):
+        table[i][j] = alphabet[(j + i) % 32]
 
-def encrypt():
-    with open('file.txt', encoding='utf-8') as f:
-        text = list(f.read().lower())
-        f.close()
-        key = "101010"
-        text_code = list(map(lambda x: codes[alphabet.index(x)], text))
-        xor = list(map(lambda x: ''.join(map(bin, bytearray(int(x, 2) ^ int(key, 2)))), text_code))
-        return list(map(lambda x: alphabet[int(x, 2) % len(alphabet)], xor))
-
-def decryption(text):
-    return ''.join(list(map(lambda x: alphabet[(alphabet.index(x) - k + len(alphabet)) % len(alphabet)], text)))
+def full_key(text, key):
+    word_key = ''
+    whitespaces = 0
+    for i in text:
+        if (i == ' '):
+            word_key += i
+            whitespaces += 1
+        else:
+            word_key += key[(text.index(i) - whitespaces) % len(key)]
+    return word_key
 
 
-encrypted = encrypt()
-decrypted = decryption(encrypted)
-print(encrypted)
-print(decrypted)
+def encode(text, key):
+    encoded = ''
+    for i in range(len(text)):
+        if (text[i] == ' '):
+            encoded += text[i]
+        else:
+            encoded += table[alphabet.index(text[i].lower())][alphabet.index(key[i])]
+    return encoded
+
+
+def decode(text, key):
+    decoded = ''
+    for i in range(len(text)):
+        if (text[i] == ' '):
+            decoded += text[i]
+        else:
+            for j in range(len(alphabet)):
+                if table[alphabet.index(key[i])][j] == text[i]:
+                    decoded += alphabet[j]
+    return decoded
+
+
+with open('fourth_task.txt', encoding='utf-8') as f:
+    text = f.read()
+    f.close()
+delete_punctuation = text.maketrans(dict.fromkeys(string.punctuation))
+delete_digits = text.maketrans(dict.fromkeys(string.digits))
+text = text.translate(delete_punctuation).translate(delete_digits).replace("\n", '')
+
+print(f"Текст: {text}")
+key = input("Ключ: ").lower()
+word_key = full_key(text, key)
+
+encoded = encode(text, word_key)
+print(f"Шифр: {encoded}")
+
+decoded = decode(encoded, word_key)
+print(f"Расшифрованный текст: {decoded}")

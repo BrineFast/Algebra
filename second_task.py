@@ -1,7 +1,7 @@
 import csv
 import string
 
-with open('file.txt', encoding='utf-8') as f:
+with open('first_second_tasks.txt', encoding='utf-8') as f:
     text = f.read()
     first_letter = ord('а')
     delete_punctuation = text.maketrans(dict.fromkeys(string.punctuation))
@@ -12,7 +12,7 @@ with open('file.txt', encoding='utf-8') as f:
                   in range(first_letter, first_letter + 32)])
     for letter in table:
         table[letter] = round(text.count(letter) / len(text), 3)
-    with open('final2.csv', 'w', newline='') as f2:
+    with open('result_second_task.csv', 'w', newline='') as f2:
         writer = csv.DictWriter(f2, table.keys(), delimiter=";")
         writer.writeheader()
         writer.writerow(table)
