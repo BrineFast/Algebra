@@ -23,7 +23,7 @@ def gcd_check():
 
 
 def encrypt(n, k):
-    with open('third_task.txt', encoding='utf-8') as f:
+    with open('utils/third_task.txt', encoding='utf-8') as f:
         text = f.read()
         f.close()
         delete_punctuation = text.maketrans(dict.fromkeys(string.punctuation))
@@ -32,7 +32,7 @@ def encrypt(n, k):
     return ''.join(list(map(lambda x: alphabet[(alphabet.index(x.lower()) * n + k) % len(alphabet)], text)))
 
 
-def decryption(text, n):
+def decrypt(text, n):
     reversed_element = 0
     for i in range(1, len(alphabet)):
         if (i * n) % len(alphabet) == 1:
@@ -45,6 +45,6 @@ def decryption(text, n):
 n, k = gcd_check()
 print(len(alphabet))
 encrypted = encrypt(n, k)
-decrypted = decryption(encrypted, n)
+decrypted = decrypt(encrypted, n)
 print(encrypted)
 print(decrypted)

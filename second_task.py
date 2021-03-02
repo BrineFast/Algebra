@@ -1,7 +1,7 @@
 import csv
 import string
 
-with open('first_second_tasks.txt', encoding='utf-8') as f:
+with open('utils/first_second_tasks.txt', encoding='utf-8') as f:
     text = f.read()
     first_letter = ord('а')
     delete_punctuation = text.maketrans(dict.fromkeys(string.punctuation))

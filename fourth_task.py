@@ -41,7 +41,7 @@ def decode(text, key):
     return decoded
 
 
-with open('fourth_task.txt', encoding='utf-8') as f:
+with open('utils/fourth_task.txt', encoding='utf-8') as f:
     text = f.read()
     f.close()
 delete_punctuation = text.maketrans(dict.fromkeys(string.punctuation))
