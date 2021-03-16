@@ -8,7 +8,7 @@ alphabet += list(string.whitespace)
 codes = list(map(lambda letter: '0' * (6 - len(format(alphabet.index(letter), 'b')))
                                 + format(alphabet.index(letter), 'b'), alphabet))
 
-with open('utils/fifth_task.txt', encoding='utf-8') as f:
+with open('../utils/fifth_task.txt', encoding='utf-8') as f:
     text = list(f.read().lower())
     f.close()
 key = input("Ключ: ")
