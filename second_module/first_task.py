@@ -2,7 +2,6 @@ import math
 import random
 
 from second_module.fifth_task import jacobi
-from second_module.fourth_task import legendre
 
 
 def willson(number):
