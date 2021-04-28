@@ -1,3 +1,4 @@
+
 import math
 
 def solve(result, m,count):
@@ -24,30 +25,33 @@ def fraction_con(x, num, coefs):
         return fraction_con(a, x0, coefs)
     return coefs
 
-def euler_solve(m, i, count):
-    if i < m and math.gcd(int(m), int(i)) == 1:
-        return euler_solve(m, i+1, count+1)
-    elif i < m:
-        return euler_solve(m, i+1, count)
-    return count
-
-
-def euler(a, b, m):
+def euclid(a, b, m):
     print(f"Уравнение: {a}x = {b}(mod{m})")
     gcd = math.gcd(a, m)
     if b % gcd == 0 and gcd == 1:
-        eul_solve = euler_solve(m, 1, 0)
-        return [int((b * math.pow(a, eul_solve -1)) % m), 1, m]
+        n = fraction_con(m / a, 1, [])
+        x0 = NotImplemented
+        if math.pow(-1, len(n) - 1) > 0:
+            x0 = (math.pow(-1, len(n) - 1) * last_frac(1, n[0], 1, len(n), n) * b) % m
+        else:
+            x0 = (last_frac(1, n[0], 1, len(n), n) * b) % 11 * math.pow(-1, len(n) - 1)
+        return [x0, len(n), m]
     elif gcd != 1:
         a = a / gcd
         b = b / gcd
         m = m / gcd
-        eul_solve = euler_solve(m, 1, 0)
-        return [int((b * math.pow(a, eul_solve -1)) % m), gcd, m]
+        n = fraction_con(m / a, 1, [])
+        if math.pow(-1, len(n) - 1) > 0:
+            x0 = (math.pow(-1, len(n) - 1) * last_frac(1, n[0], 1, len(n), n) * b) % m
+        else:
+            x0 = (last_frac(1, n[0], 1, len(n), n) * b) % 11 * math.pow(-1, len(n) - 1)
+        return [x0, len(n), m]
     print("Нет решений")
     return None
 
-# first = euler(3, 4, 34)
-# print(solve(first[0], first[2], first[1]))
-second = euler(6, 26, 22)
-print(solve(second[0], second[2], second[1]))
+def homomorphism(n, m):
+    euclid_val = euclid(n, 0, m)
+    solve(euclid_val[0], euclid_val[2], math.gcd(n, m))
+    print(f"Гомоморфизмов: {math.gcd(n, m)}")
+
+homomorphism(40, 60)
